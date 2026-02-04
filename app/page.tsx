@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { Container } from "./components/ui/Container";
@@ -11,14 +11,15 @@ import { BentoGrid, BentoItem } from "./components/layout/BentoGrid";
 import { OptimizedImage } from "./components/media/OptimizedImage";
 import { ScrollIndicator } from "./components/animations/ScrollIndicator";
 import { BlurFade } from "./components/BlurFade";
+import { useRef } from "react";
 
 const featuredProjects = [
   {
     title: "Concerts",
     description: "L'énergie pure de la musique live",
-    image: "/img/hgfv23.png",
+    image: "/img/jos4.jpg",
     link: "/concerts",
-    span: "large" as const,
+    span: "default" as const,
   },
   {
     title: "Portraits",
@@ -39,23 +40,37 @@ const featuredProjects = [
     description: "Découvrir le monde",
     image: "/img/Malmo-1.jpg",
     link: "/voyages",
-    span: "wide" as const,
+    span: "default" as const,
   },
 ];
 
 export default function Home() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+
   return (
     <div className="bg-black min-h-screen">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden">
-        {/* Background image with parallax effect */}
-        <div className="absolute inset-0 z-0 w-full h-full relative">
-          {/* Gradient overlays */}
+      {/* Hero Section avec Parallax */}
+      <section
+        ref={heroRef}
+        className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden"
+      >
+        {/* Background avec effet parallax */}
+        <motion.div
+          className="absolute inset-0 z-0 w-full h-full"
+          style={{ opacity, scale }}
+        >
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
-        </div>
+        </motion.div>
 
         {/* Hero content */}
         <Container className="relative z-10 text-center pt-32 pb-20">
@@ -77,7 +92,9 @@ export default function Home() {
           >
             Noah
             <br />
-            <span className="text-gradient">Dekeyzer</span>
+            <span className="inline-block">
+              Dekeyzer
+            </span>
           </motion.h1>
 
           <motion.p
@@ -97,7 +114,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Button href="/portfolio" size="lg" className="text-black">
+            <Button href="/portfolio" size="lg">
               Voir mes projets
             </Button>
             <Button href="/contact" variant="secondary" size="lg">
@@ -106,14 +123,23 @@ export default function Home() {
           </motion.div>
         </Container>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator avec bounce */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
         >
-          <ScrollIndicator />
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            <ScrollIndicator />
+          </motion.div>
         </motion.div>
       </section>
 
@@ -122,9 +148,12 @@ export default function Home() {
         <Container>
           <BlurFade delay={0.1} inView>
             <div className="text-center mb-16">
-              <span className="text-sm tracking-[0.3em] uppercase text-gray-500 mb-4 block">
+              <motion.span
+                className="text-sm tracking-[0.3em] uppercase text-gray-500 mb-4 block"
+                whileHover={{ letterSpacing: "0.4em", transition: { duration: 0.3 } }}
+              >
                 Portfolio
-              </span>
+              </motion.span>
               <h2 className="text-heading text-white mb-4">
                 Projets en vedette
               </h2>
@@ -135,36 +164,61 @@ export default function Home() {
             </div>
           </BlurFade>
 
-          <BentoGrid columns={3} gap="md">
+          <BentoGrid columns={2} gap="md">
             {featuredProjects.map((project, index) => (
               <BentoItem key={project.title} span={project.span} index={index}>
                 <Link href={project.link} className="block h-full group">
-                  <div className="relative w-full h-full min-h-[280px]">
+                  <motion.div
+                    className="relative w-full h-full"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  >
                     <OptimizedImage
                       src={project.image}
                       alt={project.title}
                       fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 640px) 100vw, 50vw"
                     />
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500 z-10" />
-                    {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                      <h3 className="text-2xl font-bold text-white mb-2">
+
+                    {/* Overlay avec animation */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70 group-hover:opacity-90 transition-all duration-500 z-10" />
+
+                    {/* Border animation au hover */}
+                    <div className="absolute inset-0 border-2 border-white/0 group-hover:border-white/20 transition-all duration-500 rounded-2xl z-20" />
+
+                    {/* Content avec slide up */}
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 z-20 p-6"
+                      initial={false}
+                    >
+                      <motion.h3
+                        className="text-2xl md:text-3xl font-bold text-white mb-2"
+                        whileHover={{ x: 5, transition: { duration: 0.2 } }}
+                      >
                         {project.title}
-                      </h3>
-                      <p className="text-gray-300 text-sm mb-4">
+                      </motion.h3>
+                      <p className="text-gray-300 text-sm md:text-base mb-4 transform transition-all duration-300 group-hover:translate-y-0 translate-y-2 opacity-0 group-hover:opacity-100">
                         {project.description}
                       </p>
-                      <span className="inline-flex items-center gap-2 text-sm font-medium text-white/80 group-hover:text-white transition-colors">
+                      <motion.span
+                        className="inline-flex items-center gap-2 text-sm font-medium text-white/80 group-hover:text-white transition-colors"
+                        whileHover={{ gap: "0.75rem" }}
+                      >
                         Voir plus
-                        <svg
-                          className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                        <motion.svg
+                          className="w-4 h-4"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
                           aria-hidden="true"
+                          animate={{ x: [0, 5, 0] }}
+                          transition={{
+                            duration: 1.5,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            repeatDelay: 1
+                          }}
                         >
                           <path
                             strokeLinecap="round"
@@ -172,10 +226,15 @@ export default function Home() {
                             strokeWidth={2}
                             d="M9 5l7 7-7 7"
                           />
-                        </svg>
-                      </span>
+                        </motion.svg>
+                      </motion.span>
+                    </motion.div>
+
+                    {/* Effet de brillance au hover */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-30 pointer-events-none">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                     </div>
-                  </div>
+                  </motion.div>
                 </Link>
               </BentoItem>
             ))}
@@ -200,23 +259,32 @@ export default function Home() {
         <Container>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <BlurFade delay={0.1} inView>
-              <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden">
+              <motion.div
+                className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden group"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.4 }}
+              >
                 <OptimizedImage
                   src="/img/Nb.png"
                   alt="Noah Dekeyzer"
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                   hoverZoom={false}
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-              </div>
+                {/* Border glow au hover */}
+                <div className="absolute inset-0 border-2 border-white/0 group-hover:border-white/30 transition-all duration-500 rounded-2xl" />
+              </motion.div>
             </BlurFade>
 
             <BlurFade delay={0.2} inView>
               <div>
-                <span className="text-sm tracking-[0.3em] uppercase text-gray-500 mb-4 block">
+                <motion.span
+                  className="text-sm tracking-[0.3em] uppercase text-gray-500 mb-4 block"
+                  whileHover={{ letterSpacing: "0.4em", transition: { duration: 0.3 } }}
+                >
                   À propos
-                </span>
+                </motion.span>
                 <h2 className="text-heading text-white mb-6">
                   Passionné par l&apos;image
                 </h2>
@@ -244,23 +312,28 @@ export default function Home() {
       <section className="section bg-black">
         <Container size="narrow">
           <BlurFade delay={0.1} inView>
-            <GlassPanel
-              blur="strong"
-              padding="xl"
-              hover={false}
-              className="text-center"
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
             >
-              <h2 className="text-subheading text-white mb-4">
-                Un projet en tête ?
-              </h2>
-              <p className="text-gray-300 mb-8 max-w-md mx-auto">
-                Je suis disponible pour vos projets photographiques. Discutons
-                ensemble de vos idées et donnons-leur vie.
-              </p>
-              <Button href="/contact" size="lg">
-                Contactez-moi
-              </Button>
-            </GlassPanel>
+              <GlassPanel
+                blur="strong"
+                padding="xl"
+                hover={false}
+                className="text-center"
+              >
+                <h2 className="text-subheading text-white mb-4">
+                  Un projet en tête ?
+                </h2>
+                <p className="text-gray-300 mb-8 max-w-md mx-auto">
+                  Je suis disponible pour vos projets photographiques. Discutons
+                  ensemble de vos idées et donnons-leur vie.
+                </p>
+                <Button href="/contact" size="lg">
+                  Contactez-moi
+                </Button>
+              </GlassPanel>
+            </motion.div>
           </BlurFade>
         </Container>
       </section>

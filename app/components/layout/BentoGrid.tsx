@@ -1,83 +1,80 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { forwardRef } from "react";
+import { ReactNode } from "react";
 
-interface BentoGridProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
+type SpanType = "default" | "large" | "wide";
+
+interface BentoGridProps {
+  children: ReactNode;
   columns?: 2 | 3 | 4;
   gap?: "sm" | "md" | "lg";
 }
 
 interface BentoItemProps {
-  children: React.ReactNode;
-  span?: "default" | "wide" | "tall" | "large";
+  children: ReactNode;
+  span?: SpanType;
   index?: number;
-  className?: string;
 }
 
 const gapStyles = {
-  sm: "gap-3 md:gap-4",
-  md: "gap-4 md:gap-6",
-  lg: "gap-6 md:gap-8",
+  sm: "gap-2",
+  md: "gap-4",
+  lg: "gap-6",
 };
 
-const columnStyles = {
-  2: "grid-cols-1 sm:grid-cols-2",
-  3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-  4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
+const spanStyles: Record<SpanType, string> = {
+  default: "col-span-1 row-span-1",
+  large: "col-span-1 md:col-span-2 row-span-1 md:row-span-2", // 2x2 sur desktop
+  wide: "col-span-1 md:col-span-3 row-span-1", // Toute la largeur
 };
 
-const spanStyles = {
-  default: "",
-  wide: "sm:col-span-2",
-  tall: "sm:row-span-2",
-  large: "sm:col-span-2 sm:row-span-2",
-};
+export function BentoGrid({ 
+  children, 
+  columns = 3, 
+  gap = "md" 
+}: BentoGridProps) {
+  return (
+    <div
+      className={`
+        grid 
+        grid-cols-1 
+        md:grid-cols-${columns}
+        auto-rows-fr
+        ${gapStyles[gap]}
+      `}
+    >
+      {children}
+    </div>
+  );
+}
 
-export const BentoGrid = forwardRef<HTMLDivElement, BentoGridProps>(
-  ({ children, columns = 3, gap = "md", className = "", ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={`grid ${columnStyles[columns]} ${gapStyles[gap]} ${className}`}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
-
-BentoGrid.displayName = "BentoGrid";
-
-export const BentoItem = forwardRef<HTMLDivElement, BentoItemProps>(
-  ({ children, span = "default", index = 0, className = "" }, ref) => {
-    return (
-      <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{
-          duration: 0.5,
-          delay: index * 0.1,
-          ease: [0.16, 1, 0.3, 1],
-        }}
-        className={`
-          relative overflow-hidden rounded-2xl
-          bg-white/[0.03] border border-white/[0.08]
-          transition-all duration-500 ease-out
-          hover:bg-white/[0.06] hover:border-white/[0.15]
-          hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]
-          ${spanStyles[span]}
-          ${className}
-        `}
-      >
-        {children}
-      </motion.div>
-    );
-  }
-);
-
-BentoItem.displayName = "BentoItem";
+export function BentoItem({ 
+  children, 
+  span = "default", 
+  index = 0 
+}: BentoItemProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ 
+        duration: 0.6, 
+        delay: index * 0.1,
+        ease: [0.16, 1, 0.3, 1]
+      }}
+      className={`
+        ${spanStyles[span]}
+        min-h-[320px]
+        md:min-h-[400px]
+        rounded-2xl 
+        overflow-hidden
+        bg-gray-900
+        relative
+      `}
+    >
+      {children}
+    </motion.div>
+  );
+}

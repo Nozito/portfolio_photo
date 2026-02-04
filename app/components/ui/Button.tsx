@@ -31,21 +31,22 @@ type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: `
-    bg-white text-black
-    hover:bg-black hover:text-white hover:border-white
+    bg-white !text-black border border-white
+    hover:!bg-black hover:!text-white hover:border-white
+    active:!bg-black active:!text-white
     focus-visible:ring-white
-    border border-transparent
   `,
   secondary: `
-    bg-transparent text-white border border-white
-    hover:bg-white hover:text-black
+    bg-transparent !text-white border border-white
+    hover:!bg-white hover:!text-black hover:border-white
+    active:!bg-white active:!text-black
     focus-visible:ring-white
   `,
   ghost: `
-    bg-transparent text-white
-    hover:bg-white hover:text-black
+    bg-transparent !text-white border border-transparent
+    hover:!bg-white hover:!text-black
+    active:!bg-white active:!text-black
     focus-visible:ring-white
-    border border-transparent
   `,
 };
 
@@ -104,10 +105,11 @@ export const Button = forwardRef<
       transition-all duration-300 ease-out
       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black
       disabled:opacity-50 disabled:cursor-not-allowed
-      ${variantStyles[variant]}
       ${sizeStyles[size]}
       ${fullWidth ? "w-full" : ""}
-    `;
+      ${variantStyles[variant]}
+      ${className}
+    `.trim().replace(/\s+/g, ' ');
 
     // External link variant
     if ("href" in props && props.href && props.external) {
@@ -119,7 +121,7 @@ export const Button = forwardRef<
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className={`${baseClasses} ${className}`}
+          className={baseClasses}
           whileHover={{ scale: 1.02, y: -2 }}
           whileTap={{ scale: 0.98 }}
           {...(linkProps as HTMLMotionProps<"a">)}
@@ -137,7 +139,7 @@ export const Button = forwardRef<
         <MotionLink
           ref={ref as React.Ref<HTMLAnchorElement>}
           href={href}
-          className={`${baseClasses} ${className}`}
+          className={baseClasses}
           whileHover={{ scale: 1.02, y: -2 }}
           whileTap={{ scale: 0.98 }}
           {...linkProps}
@@ -153,7 +155,7 @@ export const Button = forwardRef<
     return (
       <motion.button
         ref={ref as React.Ref<HTMLButtonElement>}
-        className={`${baseClasses} ${className}`}
+        className={baseClasses}
         disabled={loading || buttonProps.disabled}
         whileHover={!loading && !buttonProps.disabled ? { scale: 1.02, y: -2 } : {}}
         whileTap={!loading && !buttonProps.disabled ? { scale: 0.98 } : {}}

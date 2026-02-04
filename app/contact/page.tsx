@@ -117,7 +117,7 @@ export default function Contact() {
                 </div>
                 <h3 className="text-white font-semibold mb-2 text-center text-lg">Localisation</h3>
                 <p className="text-gray-400 text-sm text-center">
-                  Basé en France, disponible partout
+                  Basé sur Annecy, disponible partout
                 </p>
               </div>
             </BlurFade>
@@ -148,7 +148,7 @@ export default function Contact() {
                 </div>
                 <h3 className="text-white font-semibold mb-2 text-center text-lg">Services</h3>
                 <p className="text-gray-400 text-sm text-center">
-                  Concerts, Portraits, Auto, Voyages
+                  Concerts, Portraits, Automobile...
                 </p>
               </div>
             </BlurFade>
