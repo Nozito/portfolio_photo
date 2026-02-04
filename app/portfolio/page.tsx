@@ -21,7 +21,7 @@ const categories = [
   {
     title: "Portraits",
     description: "Un regard, une émotion, un instant figé dans le temps",
-    image: "/img/DSC052772.JPG",
+    image: "/img/DSC052772.jpg",
     link: "/portraits",
     count: "16 photos",
   },
