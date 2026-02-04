@@ -14,7 +14,7 @@ export default function Porsche() {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const photos = [
-    "/img/bannerp.jpg",      // 0 - Grande horizontale (2x2)
+    "/img/bannerp.JPG",      // 0 - Grande horizontale (2x2)
     "/img/911n.jpg",         // 1 - Verticale
     "/img/953t.jpg",         // 2 - Verticale
     "/img/GT3r.jpg",         // 3 - Verticale

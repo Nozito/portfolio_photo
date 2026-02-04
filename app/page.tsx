@@ -24,7 +24,7 @@ const featuredProjects = [
   {
     title: "Portraits",
     description: "Un regard, une émotion",
-    image: "/img/DSC052772.JPG",
+    image: "/img/DSC052772.jpg",
     link: "/portraits",
     span: "default" as const,
   },

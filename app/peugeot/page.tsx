@@ -14,13 +14,13 @@ export default function Peugeot() {
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const photos = [
-    "/img/308JL-43-SP.JPG",  // 0 - Grande (2x2)
-    "/img/308JL-10.JPG",     // 1 - Verticale
-    "/img/308JL-33.JPG",     // 2 - Verticale
-    "/img/308JL-36-SP.JPG",  // 3 - Verticale
-    "/img/308JL-19.JPG",     // 4 - Verticale
-    "/img/308JL-44.JPG",     // 5 - Grande (2x2)
-    "/img/308JL-48.JPG",     // 6 - FULL WIDTH
+    "/img/308JL-43-SP.jpg",  // 0 - Grande (2x2)
+    "/img/308JL-10.jpg",     // 1 - Verticale
+    "/img/308JL-33.jpg",     // 2 - Verticale
+    "/img/308JL-36-SP.jpg",  // 3 - Verticale
+    "/img/308JL-19.jpg",     // 4 - Verticale
+    "/img/308JL-44.jpg",     // 5 - Grande (2x2)
+    "/img/308JL-48.jpg",     // 6 - FULL WIDTH
   ];
 
   const getGridClass = (idx: number) => {
