@@ -1,0 +1,127 @@
+.cssportal-grid {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: repeat(9, 1fr);
+    gap: 1em;
+    width: 90%;
+    height: 100%;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.cssportal-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5em;
+    cursor: pointer;
+}
+
+.cssportal-grid div {
+    border-radius: 0.5em;
+    overflow: hidden;
+}
+
+#div1 {
+    grid-area: 4 / 3 / 7 / 8;
+}
+
+#div2 {
+    grid-area: 1 / 1 / 4 / 5;
+}
+
+#div3 {
+    grid-area: 1 / 5 / 4 / 10;
+}
+
+#div4 {
+    grid-area: 4 / 8 / 7 / 10;
+}
+
+#div5 {
+    grid-area: 4 / 1 / 7 / 3;
+}
+
+#div6 {
+    grid-area: 1 / 1 / 4 / 3;
+}
+
+#div7 {
+    grid-area: 4 / 8 / 7 / 10;
+}
+
+#div8 {
+    grid-area: 1 / 3 / 4 / 10;
+}
+
+#div9 {
+    grid-area: 4 / 1 / 7 / 8;
+}
+
+    
+#div10 {
+    grid-area: 1 / 1 / 4 / 10;
+}
+
+#div11 {
+    grid-column: span 3 / span 3;
+    grid-row: span 2 / span 2;
+    grid-row-start: 4;
+}
+
+#div12 {
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 4;
+}
+
+#div13 {
+    grid-area: 4 / 1 / 7 / 8;
+}
+#div14 {
+    grid-area: 1 / 1 / 4 / 10;
+}
+#div15 {
+    grid-area: 4 / 8 / 7 / 10;
+}
+
+#div1,
+#div2,
+#div3,
+#div4,
+#div5,
+#div6,
+#div7,
+#div8,
+#div9, 
+#div10,
+#div11,
+#div12,
+#div13,
+#div14,
+#div15
+{
+    transition: all 0.5s ease;
+    transform: scale(1);
+    box-shadow: none;
+}
+
+#div1:hover,
+#div2:hover,
+#div3:hover,
+#div4:hover,
+#div5:hover,
+#div6:hover,
+#div7:hover,
+#div8:hover,
+#div9:hover,
+#div10:hover,
+#div11:hover,
+#div12:hover,
+#div13:hover,
+#div14:hover,
+#div15:hover {
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 30px;
+    transform: scale(1.02);
+}
